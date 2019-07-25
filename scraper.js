@@ -6,18 +6,18 @@ const url = 'https://my.uq.edu.au/programs-courses/search.html?keywords=&searchT
 request(url)
   .then(function(html){
     //success!
-    const courses = $('td:not([colspan]) > a', html);
+    const courses = $('td[colspan=4] > a', html);
     let courseUrls = [];
     for (var courseId in courses) {
         if (courses.hasOwnProperty(courseId)) {
             let course = courses[courseId];
-            if (course.attribs !== undefined && course.attribs.href !== undefined && course.attribs.href.indexOf('&offer=') !== -1) {
+            if (course.attribs !== undefined && course.attribs.href !== undefined) {
                 let courseUrl = course.attribs.href;
                 courseUrls.push(courseUrl.substring(courseUrl.indexOf('=') + 1));
             }
         }
     }
-    fs.writeFileSync('./data/urls.json', JSON.stringify(courseUrls));
+    fs.writeFileSync('./data/codes.json', JSON.stringify(courseUrls));
   })
   .catch(function(err){
     //handle error
