@@ -11,8 +11,9 @@ request(url)
     for (var courseId in courses) {
         if (courses.hasOwnProperty(courseId)) {
             let course = courses[courseId];
-            if (course.attribs !== undefined && course.attribs.href !== undefined && course.attribs.href.indexOf('&offer=') !== undefined) {
-                courseUrls.push(course.attribs.href);
+            if (course.attribs !== undefined && course.attribs.href !== undefined && course.attribs.href.indexOf('&offer=') !== -1) {
+                let courseUrl = course.attribs.href;
+                courseUrls.push(courseUrl.substring(courseUrl.indexOf('=') + 1));
             }
         }
     }
