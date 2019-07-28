@@ -6,12 +6,12 @@ const url = 'https://my.uq.edu.au/programs-courses/search.html?keywords=&searchT
 request(url)
   .then(function(html){
     //success!
-    const courses = $('td[colspan=4] > a', html);
+    const courses = $('td[colspan=4] a', html);
     let courseUrls = [];
     for (var courseId in courses) {
         if (courses.hasOwnProperty(courseId)) {
-            let course = courses[courseId];
-            if (course.attribs !== undefined && course.attribs.href !== undefined) {
+          let course = courses[courseId];
+            if (course.attribs !== undefined && course.attribs.href !== undefined && course.children[0].data !== "View all other offerings") {
                 let courseUrl = course.attribs.href;
                 courseUrls.push(courseUrl.substring(courseUrl.indexOf('=') + 1));
             }
