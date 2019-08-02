@@ -6,12 +6,11 @@ const chunkSize = 25;
 const fileLimit = 500;
 const gradAttrStrings = fs.readFileSync('./config/gradAttrStrings.json');
 const pathFragment = 'https://course-profiles.uq.edu.au/student_section_loader/print/';
-const recordLimit = 100001;
 
 let data = [];
 let learningData = [];
 
-function writeFiles(recordNum) {
+function writeFiles(recordNum, recordLimit) {
     let ratio = (recordNum-fileLimit)/fileLimit;
     if (ratio === Math.round(ratio)) {
         fs.writeFileSync(`./data/courses/courses-${recordNum}.json`, JSON.stringify(data));
@@ -21,7 +20,7 @@ function writeFiles(recordNum) {
         learningData = [];
     }
     if (recordNum + 1 <= recordLimit) {
-        getChunk(recordNum + 1);
+        getChunk(recordNum + 1, recordLimit);
     }
 };
 
@@ -40,11 +39,11 @@ function cleanHTML(str, options) {
     return output;
 };
 
-function getChunk(startNum) {
-    let endNum = startNum + chunkSize - 1;
+function getChunk(startNum, recordLimit) {
+    let chunkEndNum = startNum + chunkSize - 1;
     let processed = 0;
-    console.log(`Getting chunk from ${startNum}`);
-    for (let recordNum = startNum; recordNum <= endNum; recordNum++) {
+    console.log(`Getting chunk from ${startNum} to ${chunkEndNum}`);
+    for (let recordNum = startNum; recordNum <= chunkEndNum; recordNum++) {
         request({
             method: 'GET',
             resolveWithFullResponse: true,
@@ -53,6 +52,7 @@ function getChunk(startNum) {
         .then(function(response){
             //success!
             const html = response.body;
+            // "404" pages do not send 404 header ¯\_(ツ)_/¯ , so only proceed if html long enough for course info
             if (html.length > 10000) {
                 const header = $('h1', html);
                 const headerText = header.text();
@@ -77,12 +77,12 @@ function getChunk(startNum) {
                 learningData.push(learningDetails);
                 processed++;
                 if (processed === chunkSize) {
-                    writeFiles(endNum);
+                    writeFiles(chunkEndNum, recordLimit);
                 }
             } else {
                 processed++;
                 if (processed === chunkSize) {
-                    writeFiles(endNum);
+                    writeFiles(chunkEndNum, recordLimit);
                 }
             }
         })
@@ -91,11 +91,11 @@ function getChunk(startNum) {
             processed++;
             console.log(`Something went wrong with ${recordNum}`);
             if (processed === chunkSize) {
-                writeFiles(endNum);
+                writeFiles(chunkEndNum, recordLimit);
             }
         });
     }
 }
 
-getChunk(78001);
+getChunk(78001, 100000);
 
