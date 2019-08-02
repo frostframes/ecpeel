@@ -2,34 +2,11 @@ const $ = require('cheerio');
 const fs = require('fs');
 const request = require('request-promise');
 
-const fileLimit = 500;
 const chunkSize = 25;
-const gaStrings = [
-    ' . IN-DEPTH KNOWLEDGE OF THE FIELD OF STUDY  <br>',
-    ' . A <b>comprehensive</b> and <b>well-founded knowledge</b> in the field of study. <br> ',
-    ' . An <b>understanding</b> of <b>how other disciplines relate</b> to the field of study. <br>',
-    ' . An <b>international perspective</b> on the field of study. <br>',
-    ' . EFFECTIVE COMMUNICATION <br>',
-    ' . The ability to <b>collect</b>, <b>analyse</b> and <b>organise information</b> and <b>ideas</b> and to <b>convey</b> those <b>ideas clearly</b> and <b>fluently</b>, in both <b>written</b> and <b>spoken forms</b>. <br>',
-    ' . The ability to <b>interact effectively with others</b> in order to work towards a common outcome. <br>',
-    ' . The ability to <b>select</b> and <b>use</b> the <b>appropriate level</b>, <b>style</b> and <b>means of communication</b>. <br>',
-    ' . The ability to <b>engage effectively</b> and <b>appropriately with information and communication technologies</b>. <br>',
-    ' . INDEPENDENCE AND CREATIVITY  <br>',
-    ' . The ability to <b>work</b> and <b>learn independently</b>. <br>',
-    ' . The ability to <b>generate ideas</b> and <b>adapt innovatively</b> to changing environments. <br>',
-    ' . The ability to <b>identify problems</b>, <b>create solutions</b>, <b>innovate</b> and <b>improve</b> current <b>practices</b>. <br>',
-    ' . CRITICAL JUDGEMENT <br>',
-    ' . The ability to <b>define</b> and <b>analyse problems</b>. <br>',
-    ' . The ability to <b>apply critical reasoning</b> to issues through <b>independent thought</b> and <b>informed judgement</b>. <br>',
-    ' . The ability to <b>evaluate opinions</b>, <b>make decisions</b> and to <b>reflect critically</b> on the justifications for decisions. <br>',
-    ' . ETHICAL AND SOCIAL UNDERSTANDING  <br>',
-    ' . An <b>understanding</b> of <b>social</b> and <b>civic responsibility</b>. <br>',
-    ' . An <b>appreciation</b> of the <b>philosophical</b> and <b>social contexts</b> of a discipline. <br>',
-    ' . A <b>knowledge</b> and <b>respect</b> of <b>ethics</b> and <b>ethical standards</b> in relation to a major area of study. <br>',
-    ' . A <b>knowledge</b> of other <b>cultures</b> and <b>times</b> and an <b>appreciation</b> of <b>cultural diversity</b>. <br>',
-];
-const recordLimit = 100001;
+const fileLimit = 500;
+const gradAttrStrings = fs.readFileSync('./config/gradAttrStrings.json');
 const pathFragment = 'https://course-profiles.uq.edu.au/student_section_loader/print/';
+const recordLimit = 100001;
 
 let data = [];
 let learningData = [];
@@ -56,7 +33,7 @@ function cleanHTML(str, options) {
         .replace(/<\/strong>/g, '')
         .replace(/ class=\"text-center\"/g, '');
     if (options !== undefined && options.ga) {
-        for (let ga of gaStrings) {
+        for (let ga of gradAttrStrings) {
             output = output.replace(ga, '');
         }
     }
