@@ -5,6 +5,7 @@ const request = require('request-promise');
 const chunkSize = 25;
 const fileLimit = 500;
 const gradAttrStrings = fs.readFileSync('./config/gradAttrStrings.json');
+const gradAttrJSON = JSON.parse(gradAttrStrings);
 const pathFragment = 'https://course-profiles.uq.edu.au/student_section_loader/print/';
 
 let data = [];
@@ -32,7 +33,7 @@ function cleanHTML(str, options) {
         .replace(/<\/strong>/g, '')
         .replace(/ class=\"text-center\"/g, '');
     if (options !== undefined && options.ga) {
-        for (let ga of gradAttrStrings) {
+        for (let ga of gradAttrJSON) {
             output = output.replace(ga, '');
         }
     }
