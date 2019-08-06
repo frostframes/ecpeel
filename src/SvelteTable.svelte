@@ -75,7 +75,7 @@
 		  	<th>
 					{#if filterValues[col.key] !== undefined}
 						<select bind:value={filterSettings[col.key]}>
-							<option value={undefined}></option>
+							<option value={undefined}>--- Any ---</option>
 						  {#each filterValues[col.key] as option}
 								<option value={option.value}>{option.name}</option>
 						  {/each}
