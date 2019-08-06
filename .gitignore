@@ -61,4 +61,7 @@ typings/
 .next
 
 # data output
-data/*
+public/data/*
+
+# svelte bundles
+public/bundle*
