@@ -3,9 +3,11 @@ const fs = require('fs');
 const request = require('request-promise');
 
 const chunkSize = 25;
-const fileLimit = 500;
+const fileLimit = 50;
 const gradAttrStrings = fs.readFileSync('./config/gradAttrStrings.json');
 const gradAttrJSON = JSON.parse(gradAttrStrings);
+const personTitles = fs.readFileSync('./config/personTitles.json');
+const personTitlesJSON = JSON.parse(personTitles);
 const pathFragment = 'https://course-profiles.uq.edu.au/student_section_loader/print/';
 
 let data = [];
@@ -14,9 +16,9 @@ let learningData = [];
 function writeFiles(recordNum, recordLimit) {
     let ratio = (recordNum-fileLimit)/fileLimit;
     if (ratio === Math.round(ratio)) {
-        fs.writeFileSync(`./data/courses/courses-${recordNum}.json`, JSON.stringify(data));
-        fs.writeFileSync(`./data/learning/learning-${recordNum}.json`, JSON.stringify(learningData));
-        console.log(`Saved ./data/courses/courses-${recordNum}.json`);
+        fs.writeFileSync(`./public/data/courses/courses-${recordNum}.json`, JSON.stringify(data));
+        fs.writeFileSync(`./public/data/learning/learning-${recordNum}.json`, JSON.stringify(learningData));
+        console.log(`Saved ./public/data/courses/courses-${recordNum}.json`);
         data = [];
         learningData = [];
     }
@@ -43,7 +45,7 @@ function cleanHTML(str, options) {
 function getChunk(startNum, recordLimit) {
     let chunkEndNum = startNum + chunkSize - 1;
     let processed = 0;
-    console.log(`Getting chunk from ${startNum} to ${chunkEndNum}`);
+    console.log(`Getting records from ${startNum} to ${chunkEndNum}`);
     for (let recordNum = startNum; recordNum <= chunkEndNum; recordNum++) {
         request({
             method: 'GET',
@@ -58,12 +60,17 @@ function getChunk(startNum, recordLimit) {
                 const header = $('h1', html);
                 const headerText = header.text();
                 const breadcrumb = header.next().text().split('|');
+                let coordinator = $('.staff-person p', html).text();
+                coordinator = coordinator.replace('Course Coordinator: ', '');
+                for (let title of personTitlesJSON) {
+                    coordinator = coordinator.replace(title, '');
+                }
                 let details = {
                     id: recordNum,
                     code: headerText.substring(0, headerText.indexOf(' - ')),
                     title: headerText.substring(headerText.substring(' - ') + 3),
-                    coordinator: $('.staff-person p', html).text(),
-                    offering: breadcrumb[0].trim(),
+                    coordinator: coordinator,
+                    offering: breadcrumb[0].trim().replace('Semester: ', ''),
                     location: breadcrumb[1].trim(),
                     mode: breadcrumb[2].trim(),
                 }
@@ -98,5 +105,5 @@ function getChunk(startNum, recordLimit) {
     }
 }
 
-getChunk(78001, 100000);
+getChunk(78001, 102000);
 
