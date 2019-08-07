@@ -1,7 +1,10 @@
 <script>
+
+	import { beforeUpdate } from 'svelte';
+	
 	export let columns;
 	export let rows;
-	
+
 	let sortOrder = 1;
 	let sortKey = "";
 	let sortBy = r => "";
@@ -9,8 +12,14 @@
 	let filterValues = {};
 	let filterSettings = {};
 	let columnByKey = {};
+
 	columns.forEach(col => {
-	  columnByKey[col.key] = col;
+		columnByKey[col.key] = col;
+	});
+
+	beforeUpdate(function() {
+		calculateFilterValues();
+		showFilterHeader = columns.some(c => c.filterOptions !== undefined);
 	});
 	// $: console.log(filterSettings, filterValues);
 	$: c_rows = rows
