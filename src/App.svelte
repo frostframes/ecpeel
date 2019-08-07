@@ -3,14 +3,15 @@
 	import SvelteTable from './SvelteTable.svelte';
 	  
 	const columns = [
-		makeFilter('coordinator', 'COORDINATOR', false),
-		makeFilter('title', 'CODE/TITLE', true),
-		makeFilter('offering', 'offering', false)
+		{key: 'id', title: 'ID', value: v => v['id'], basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
+		makeFilter('coordinator', 'COORDINATOR', {}),
+		makeFilter('title', 'CODE/TITLE', {filterByLetter: true}),
+		makeFilter('offering', 'offering', {})
 	];
 
 	let rows = [];
 	
-	function makeFilter(strKey, strTitle, boolFirst) {
+	function makeFilter(strKey, strTitle, options) {
 		return {
 			key: strKey,
 			title: strTitle,
@@ -20,7 +21,7 @@
 				// use first letter to generate filter
 				let letrs = {};
 				rows.forEach(row => {
-					let letr = boolFirst ? row[strKey].charAt(0) : row[strKey];
+					let letr = options.filterByLetter ? row[strKey].charAt(0) : row[strKey];
 				if (letrs[letr] === undefined)
 					letrs[letr] = {
 						name: `${letr}`,
@@ -33,7 +34,7 @@
 				.reduce((o, [k, v]) => ((o[k] = v), o), {});
 				return Object.values(letrs);
 			},
-			filterValue: v => boolFirst ? v[strKey].charAt(0).toLowerCase() : v[strKey].toLowerCase()
+			filterValue: v => options.filterByLetter ? v[strKey].charAt(0).toLowerCase() : v[strKey].toLowerCase()
 		};
 	}
 

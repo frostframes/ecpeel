@@ -78,9 +78,11 @@
 </style>
 
 <table>
+	<thead>
 	{#if showFilterHeader}
 		<tr>
 		  {#each columns as col}
+		  {#if !col.hide}
 		  	<th>
 					{#if filterValues[col.key] !== undefined}
 						<select bind:value={filterSettings[col.key]}>
@@ -91,24 +93,38 @@
 						</select>
 					{/if}
 				</th>
+				{/if}
 		  {/each}
 		</tr>
 	{/if}
 	<tr>
 	  {#each columns as col}
+	  {#if !col.hide}
 	  	<th on:click={() => handleSort(col)} class="{[(col.sortable ? 'isSortable' : '' ),(col.headerClass !== undefined && col.headerClass)].join(' ')}">
 				{col.title}
 				{#if sortKey === col.key}
 					{ sortOrder === 1 ? '▲' : '▼'}
 				{/if}
 			</th>
+			{/if}
 	  {/each}
 	</tr>
+	</thead>
+	<tbody>
 	{#each c_rows as row}
 		<tr>
 		  {#each columns as col}
-		  	<td class="{col.class !== undefined && col.class}">{@html col.renderValue ? col.renderValue(row) : col.value(row)}</td>
+			{#if !col.hide && col.basepath}
+				<td class="{col.class !== undefined && col.class}">
+					<a href="{col.basepath}{col.value(row)}" target="pcw">{@html col.renderValue ? col.renderValue(row) : col.value(row)}</a>
+				</td>
+			{:else if !col.hide}
+				<td class="{col.class !== undefined && col.class}">
+					{@html col.renderValue ? col.renderValue(row) : col.value(row)}
+				</td>
+			{/if}
 		  {/each}
 		</tr>
 	{/each}
+	</tbody>
 </table>
