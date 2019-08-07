@@ -3,10 +3,11 @@
 	import SvelteTable from './SvelteTable.svelte';
 	  
 	const columns = [
-		{key: 'id', title: 'ID', value: v => v['id'], basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
 		makeFilter('coordinator', 'COORDINATOR', {}),
 		makeFilter('title', 'CODE/TITLE', {filterByLetter: true}),
-		makeFilter('offering', 'offering', {})
+		makeFilter('year', 'YEAR', {}),
+		makeFilter('offering', 'OFFERING', {}),
+		{key: 'id', title: 'VIEW', value: v => v['id'], basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
 	];
 
 	let rows = [];
@@ -25,7 +26,7 @@
 				if (letrs[letr] === undefined)
 					letrs[letr] = {
 						name: `${letr}`,
-					value: letr.toLowerCase()
+					value: String(letr).toLowerCase()
 					};
 				});
 				// fix order
@@ -34,7 +35,7 @@
 				.reduce((o, [k, v]) => ((o[k] = v), o), {});
 				return Object.values(letrs);
 			},
-			filterValue: v => options.filterByLetter ? v[strKey].charAt(0).toLowerCase() : v[strKey].toLowerCase()
+			filterValue: v => options.filterByLetter ? v[strKey].charAt(0).toLowerCase() : String(v[strKey]).toLowerCase()
 		};
 	}
 
@@ -52,6 +53,14 @@
 <style>
 	h1 {
 		color: darkslateblue;
+	}
+	header {
+		position: fixed;
+		width: 100%;
+		height: 5em;
+		background-color: aliceblue;
+		padding: 15px;
+		top: 0;
 	}
 </style>
 <header>

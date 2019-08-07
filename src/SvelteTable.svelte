@@ -68,6 +68,7 @@
 <style>
 	table {
 	  width: 100%;
+	  margin-top: 10em;
 	}
 	.isSortable {
 	  cursor: pointer;
@@ -75,6 +76,23 @@
 	tr th select {
 		width: 100%;
 	}
+	td {
+		border-bottom: 1px solid #ccc;
+		padding: 5px;
+		width: 20%;
+	}
+	th {
+		width: 20%;
+	}
+	thead {
+		position: fixed;
+		background-color: aliceblue;
+		width: 100%;
+		top: 5em;
+		border-bottom: 1px solid #999;
+		box-shadow: 0 5px 2px 1px rgba(0, 0, 0, .2);
+	}
+
 </style>
 
 <table>

@@ -7,7 +7,7 @@ html, body {
 body {
 	color: #333;
 	margin: 0;
-	padding: 8px;
+	padding: 0;
 	box-sizing: border-box;
 	font-family: "Roboto","Helvetica Neue",Helvetica,Arial,sans-serif
 }
