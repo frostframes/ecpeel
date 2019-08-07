@@ -24,6 +24,10 @@ fs.readdir(path, (err, files) => {
             // Remove email from coordinator name, if present
             let emailIndex = filtered.coordinator.indexOf('Email:');
             filtered.coordinator = emailIndex === -1 ? filtered.coordinator : filtered.coordinator.substr(0, emailIndex);
+
+            // Remove other coordinator names, if present
+            let coordIndex = filtered.coordinator.indexOf('Course Coordinator');
+            filtered.coordinator = coordIndex === -1 ? filtered.coordinator : filtered.coordinator.substr(0, coordIndex);
             
             // Add to courses array
             courses = [...courses, filtered];
