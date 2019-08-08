@@ -73,7 +73,7 @@
 	.isSortable {
 	  cursor: pointer;
 	}
-	tr th select {
+	tr, th select {
 		width: 100%;
 	}
 	td {
@@ -82,15 +82,47 @@
 		width: 20%;
 	}
 	th {
-		width: 20%;
+		position: fixed;
+	}
+	th span {
+		display: block;
+		width: 100%;
 	}
 	thead {
 		position: fixed;
 		background-color: aliceblue;
 		width: 100%;
 		top: 5em;
+		height: 5em;;
 		border-bottom: 1px solid #999;
 		box-shadow: 0 5px 2px 1px rgba(0, 0, 0, .2);
+	}
+	thead tr {
+		position: fixed;
+		width: 100%;
+	}
+	.coordCol {
+		left: 0;
+		width: 20%;
+	}
+	.titleCol {
+		left: 20%;
+		width: 40%;
+	}
+	.yearCol {
+		left: 60%;
+		width: 10%;
+	}
+	.offeringCol {
+		left: 70%;
+		width: 20%;
+	}
+	.viewCol {
+		Left: 90%;
+		width: 10%;
+	}
+	.text-center {
+		text-align: center;
 	}
 
 </style>
@@ -98,35 +130,30 @@
 <table>
 	<thead>
 	{#if showFilterHeader}
-		<tr>
+		<tr class="filters">
 		  {#each columns as col}
-		  {#if !col.hide}
-		  	<th>
-					{#if filterValues[col.key] !== undefined}
-						<select bind:value={filterSettings[col.key]}>
-							<option value={undefined}>--- Any ---</option>
-						  {#each filterValues[col.key] as option}
-								<option value={option.value}>{option.name}</option>
-						  {/each}
-						</select>
-					{/if}
-				</th>
+			{#if !col.hide}
+		  	<th class="{col.class !== undefined && col.class}" >
+				{#if filterValues[col.key] !== undefined}
+					<select bind:value={filterSettings[col.key]}>
+						<option value={undefined}>--- Any ---</option>
+						{#each filterValues[col.key] as option}
+							<option value={option.value}>{option.name}</option>
+						{/each}
+					</select>
 				{/if}
+				<span on:click={() => handleSort(col)} class="{col.class !== undefined && col.class} {[(col.sortable ? 'isSortable' : '' ),(col.headerClass !== undefined && col.headerClass)].join(' ')}">
+					{col.title}
+					{#if sortKey === col.key}
+						{ sortOrder === 1 ? '▲' : '▼'}
+					{/if}
+				</span>
+			</th>
+			{/if}
 		  {/each}
 		</tr>
 	{/if}
-	<tr>
-	  {#each columns as col}
-	  {#if !col.hide}
-	  	<th on:click={() => handleSort(col)} class="{[(col.sortable ? 'isSortable' : '' ),(col.headerClass !== undefined && col.headerClass)].join(' ')}">
-				{col.title}
-				{#if sortKey === col.key}
-					{ sortOrder === 1 ? '▲' : '▼'}
-				{/if}
-			</th>
-			{/if}
-	  {/each}
-	</tr>
+
 	</thead>
 	<tbody>
 	{#each c_rows as row}

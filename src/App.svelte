@@ -3,11 +3,11 @@
 	import SvelteTable from './SvelteTable.svelte';
 	  
 	const columns = [
-		makeFilter('coordinator', 'COORDINATOR', {}),
-		makeFilter('title', 'CODE/TITLE', {filterByLetter: true}),
-		makeFilter('year', 'YEAR', {}),
-		makeFilter('offering', 'OFFERING', {}),
-		{key: 'id', title: 'VIEW', value: v => v['id'], basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
+		makeFilter('coordinator', 'COORDINATOR', { class: 'coordCol' }),
+		makeFilter('title', 'CODE/TITLE', {filterByLetter: true, class: 'titleCol'}),
+		makeFilter('year', 'YEAR', { class: 'yearCol text-center'}),
+		makeFilter('offering', 'OFFERING', { class: 'offeringCol text-center' }),
+		{key: 'id', title: 'VIEW', value: v => v['id'], class: 'viewCol text-center', basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
 	];
 
 	let rows = [];
@@ -18,6 +18,7 @@
 			title: strTitle,
 			value: v => v[strKey],
 			sortable: true,
+			class: options.class === undefined ? ' ' : options.class,
 			filterOptions: rows => {
 				// use first letter to generate filter
 				let letrs = {};
