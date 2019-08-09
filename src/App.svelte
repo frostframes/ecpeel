@@ -7,7 +7,7 @@
 		makeFilter('title', 'CODE/TITLE', {filterByLetter: true, class: 'titleCol'}),
 		makeFilter('year', 'YEAR', { class: 'yearCol text-center'}),
 		makeFilter('offering', 'OFFERING', { class: 'offeringCol text-center' }),
-		{key: 'id', title: 'Open', value: v => v['id'], class: 'viewCol text-center', basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
+		{key: 'id', title: 'ECP link', value: v => v['id'], class: 'viewCol text-center', basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
 	];
 
 	let rows = [];
