@@ -73,7 +73,7 @@
 	.isSortable {
 	  cursor: pointer;
 	}
-	tr, th select {
+	th select {
 		width: 100%;
 	}
 	td {
@@ -82,19 +82,24 @@
 		width: 20%;
 	}
 	th {
+		border-left: 1px solid #ccc;
+		border-right: 1px solid #ccc;
+		font-weight: normal;
+		height: 4.5em;
 		position: fixed;
 	}
 	th span {
 		display: block;
 		width: 100%;
+		color: #444;
 	}
 	thead {
 		position: fixed;
-		background-color: aliceblue;
+		background-color: #eee;
+		height: 4.5em;		
 		width: 100%;
 		top: 5em;
-		height: 5em;;
-		border-bottom: 1px solid #999;
+		border-bottom: 1px solid rgb(38, 18, 58);
 		box-shadow: 0 5px 2px 1px rgba(0, 0, 0, .2);
 	}
 	thead tr {

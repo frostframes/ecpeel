@@ -7,7 +7,7 @@
 		makeFilter('title', 'CODE/TITLE', {filterByLetter: true, class: 'titleCol'}),
 		makeFilter('year', 'YEAR', { class: 'yearCol text-center'}),
 		makeFilter('offering', 'OFFERING', { class: 'offeringCol text-center' }),
-		{key: 'id', title: 'VIEW', value: v => v['id'], class: 'viewCol text-center', basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
+		{key: 'id', title: 'Open', value: v => v['id'], class: 'viewCol text-center', basepath: 'https://course-profiles.uq.edu.au/student_section_loader/section_1/' },
 	];
 
 	let rows = [];
@@ -53,13 +53,15 @@
 </script>
 <style>
 	h1 {
-		color: darkslateblue;
+		color: white;
+		font-weight: normal;
+		font-size: large;
 	}
 	header {
 		position: fixed;
 		width: 100%;
 		height: 5em;
-		background-color: aliceblue;
+		background-color: #51247A;
 		padding: 15px;
 		top: 0;
 	}
