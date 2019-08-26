@@ -60,10 +60,10 @@ function getChunk(startNum, recordLimit) {
                 const header = $('h1', html);
                 const headerText = header.text();
                 const breadcrumb = header.next().text().split('|');
-                let coordinator = $('.staff-person p', html).text();
-                coordinator = coordinator.replace('Course Coordinator: ', '');
+                let coordinator = $('.staff p:first-child', html).text();
+                coordinator = coordinator.replace('Course Coordinator:', '');
                 for (let title of personTitlesJSON) {
-                    coordinator = coordinator.replace(title, '');
+                    coordinator = coordinator.replace(title, '').trim();
                 }
                 let details = {
                     id: recordNum,
