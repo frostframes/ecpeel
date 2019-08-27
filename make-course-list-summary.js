@@ -29,6 +29,9 @@ fs.readdir(path, (err, files) => {
             let coordIndex = filtered.coordinator.indexOf('Course Coordinator');
             filtered.coordinator = coordIndex === -1 ? filtered.coordinator : filtered.coordinator.substr(0, coordIndex);
             
+	    // Remove leading Lecturer: text
+	    filtered.coordinator = filtered.coordinator.indexOf('Lecturer: ') === -1 ? filtered.coordinator : filtered.coordinator.substr(10) + ' (lecturer)';
+	    
             // Add to courses array
             courses = [...courses, filtered];
         }
